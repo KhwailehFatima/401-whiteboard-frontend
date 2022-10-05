@@ -13,11 +13,10 @@ import { authContext } from './Context/authContext';
 
 function App() {
 
-  const {checkToken, handleLogout, checkLoggedin,isLoggedin, setisLoggedin } = useContext(authContext);
+  const {checkToken, handleLogout, checkLoggedin,isLoggedin} = useContext(authContext);
 
   useEffect(() => {
     checkToken()
-    
   }, []);
 
   return (

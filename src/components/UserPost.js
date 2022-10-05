@@ -3,17 +3,15 @@ import AddPostForm from "./add-post-form";
 import AddCommentForm from "./add-comment-form";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
-import Alert from "react-bootstrap/Alert";
 import EditModal from "./Modal";
 import { useContext } from "react";
 import { postContext } from "../Context/postContext";
 import cookies from 'react-cookies'
-import CardHeader from "react-bootstrap/esm/CardHeader";
-import userEvent from "@testing-library/user-event";
 import { authContext } from "../Context/authContext";
+
 export default function Post() {
 
-  const { capabilities, setAlertUser, getAllPosts, handlePostDelete, handleCommentDelete, posts, role } = useContext(postContext);
+  const { getAllPosts, handlePostDelete, handleCommentDelete, posts, role } = useContext(postContext);
   const { userName } = useContext(authContext)
   useEffect(() => {
     getAllPosts();
@@ -47,7 +45,7 @@ export default function Post() {
                     {role === "admin" || (cookies.load('userId') === value.userID) ? (
 
                       <div>
-                        
+
                         <EditModal post={value} getAllPosts={getAllPosts} />
                         <Button variant="danger" onClick={() => handlePostDelete(value.id)}>Delete Post</Button>
                       </div>

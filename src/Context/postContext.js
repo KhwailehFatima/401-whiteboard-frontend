@@ -8,7 +8,7 @@ export const postContext = createContext();
 
     /*************************************UserPost*******************************/
     const [posts, setPosts] = useState([]);
-    const [alertUser, setAlertUser] = useState(false);
+    const [ setAlertUser] = useState(false);
 
     const getAllPosts = async () => {
       const allPosts = await axios.get(`${process.env.REACT_APP_HEROKU_URL}/post`, {
