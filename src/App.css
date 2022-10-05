@@ -1,0 +1,168 @@
+body {
+  background-color: black;
+  color: yellow;
+  /* width: 100%;
+  height: 100%; */
+}
+
+.App-header {
+  line-height: 20px;
+  background-color: yellowgreen;
+  color: white;
+  height: 180px;
+  /* filter: blur(1px); */
+  margin-top: -22px;
+
+}
+
+.postForm {
+  text-align: center;
+  height: 70px;
+  width: 500px;
+
+
+}
+.parent-div{
+ align-content: center;
+ position: relative;
+ margin-left: 30%;
+
+}
+.cards {
+  position: relative;
+  margin-top: 200px;
+  margin-left: 100px;
+  text-align: center;
+  display: grid;
+   grid-row: auto;
+}
+
+.eachCard {
+ 
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  margin-top: 20px;
+ }
+
+.post-p{
+box-sizing: content-box;
+border-radius: 1cm;
+background-color: yellowgreen;
+color: black;
+
+}
+
+.post-title{
+ box-sizing: border-box;
+  
+
+}
+
+.myheader {
+  text-align: center;
+  position: relative;
+  top: 70px;
+}
+
+
+/* signin */
+.signin-div {
+  display: flex;
+  flex-direction: row;
+  align-content: center;
+  position: relative;
+  margin: 200px 100px;
+}
+
+.signin-img {
+  width: 500px;
+  height: 400px;
+  position: relative;
+  margin-right: 100px;
+
+
+}
+
+.label {
+  margin-left: 5px;
+}
+
+.signin-form {
+  position: relative;
+  margin-top: -50px;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.signin-input {
+  height: 70px;
+  width: 500px;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 50px;
+}
+
+.input {
+  margin-top: 10px;
+  border: 1px solid #dee2e6;
+  border-radius: 2rem;
+  height: 50px;
+  text-align: center;
+}
+
+.input:hover {
+  background-color: gray;
+}
+
+.signin-button {
+
+  border: 1px #dee2e6;
+  border-radius: 2rem;
+  height: 40px;
+  width: 500px;
+
+}
+
+.signin-button:hover {
+  background-color: gray;
+}
+
+.signin-p {
+  text-align: center;
+}
+
+.role {
+  color: yellow;
+  position: relative;
+  top: 150px;
+}
+
+.button-modal {
+  height: 100px;
+  width: 500px;
+}
+
+/*Add post */
+/* .post-form{
+ display: flex;
+ flex: row;
+} */
+
+.footer {
+  height: 100px;
+  font-weight: 1000;
+  text-shadow: 2px;
+  box-shadow: 50ch;
+  text-align: center;
+  color: white;
+  position: relative;
+  top: 50px;
+  background-color: yellowgreen;
+}
+
+.footer-p {
+  position: relative;
+  top: 50px;
+}
