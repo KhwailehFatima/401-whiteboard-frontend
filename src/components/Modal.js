@@ -14,7 +14,7 @@ function ShowModal(props) {
             postTitle: e.target.editTitle.value,
             postContent: e.target.editContent.value
         }
-        await axios.put(`${process.env.REACT_APP_HEROKU_URL}/post/${id}`,editedPost,{
+        await axios.put(`${process.env.REACT_APP_HEROKU_URI}/post/${id}`,editedPost,{
             headers: {
                 Authorization:`Bearer ${Cookies.load("token")}`
             }
