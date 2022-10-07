@@ -11,7 +11,7 @@ export const postContext = createContext();
     const [ setAlertUser] = useState(false);
 
     const getAllPosts = async () => {
-      const allPosts = await axios.get(`${process.env.REACT_APP_HEROKU_URL}/post`, {
+      const allPosts = await axios.get(`${process.env.REACT_APP_HEROKU_URI}/post`, {
         headers: {
           Authorization: `Bearer ${cookies.load('token')}`
         },
@@ -21,7 +21,7 @@ export const postContext = createContext();
     };
 
       const handlePostDelete = async (id) => {
-        await axios.delete(`${process.env.REACT_APP_HEROKU_URL}/post/${id}`, {
+        await axios.delete(`${process.env.REACT_APP_HEROKU_URI}/post/${id}`, {
           headers: {
             Authorization: `Bearer ${cookies.load("token")}`,
           },
@@ -30,7 +30,7 @@ export const postContext = createContext();
         setAlertUser(true);
       };
       const handleCommentDelete = async (id) => {
-        await axios.delete(`${process.env.REACT_APP_HEROKU_URL}/comment/${id}`, {
+        await axios.delete(`${process.env.REACT_APP_HEROKU_URI}/comment/${id}`, {
           headers: {
             Authorization: `Bearer ${cookies.load("token")}`,
           },
@@ -48,7 +48,7 @@ const handleSubmitPostForm = async (e) => {
         postTitle: e.target.title.value,
         postContent: e.target.content.value
     };
-    await axios.post(`${process.env.REACT_APP_HEROKU_URL}/post`, newPost, {
+    await axios.post(`${process.env.REACT_APP_HEROKU_URI}/post`, newPost, {
         headers: {
           Authorization: `Bearer ${cookies.load('token')}`,
         }
@@ -65,7 +65,7 @@ const handleSubmitCommentForm = async (e) => {
     const newComment = {
       comment: e.target.comment.value,
     };
-     await axios.post(`${process.env.REACT_APP_HEROKU_URL}/comment/${props.postID}/${userID}`, newComment).then(() => {
+     await axios.post(`${process.env.REACT_APP_HEROKU_URI}/comment/${props.postID}/${userID}`, newComment).then(() => {
  
       props.getAllPosts();
     });
