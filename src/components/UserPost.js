@@ -15,7 +15,7 @@ export default function Post() {
 
   useEffect(() => {
     getAllPosts();
-  }, []);
+  });
 
   return (
     <div className="parent-div">

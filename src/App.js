@@ -8,16 +8,16 @@ import Header from './components/header';
 import Footer from './components/footer';
 import { useContext } from 'react';
 import { authContext } from './Context/authContext';
- 
+
 
 
 function App() {
 
-  const {checkToken, handleLogout, checkLoggedin,isLoggedin} = useContext(authContext);
+  const { checkToken, handleLogout, checkLoggedin, isLoggedin } = useContext(authContext);
 
   useEffect(() => {
     checkToken()
-  }, []);
+  });
 
   return (
     <div className="App">

@@ -63,7 +63,7 @@ const AuthContextProvider = (props) => {
                 role: e.target.role.value,
 
             };
-             console.log(process.env.REACT_APP_HEROKU_URI)
+            //  console.log(process.env.REACT_APP_HEROKU_URI)
             await axios.post(`${process.env.REACT_APP_HEROKU_URI}/signup`, data)
                 .then((res) => {
                     console.log(res)
@@ -71,7 +71,7 @@ const AuthContextProvider = (props) => {
                 }).catch((error) => console.log(error));
         } else {
             setisPassword(true)
-            console.log('password dont match')
+            console.log('password does not match')
         }
 
     };
