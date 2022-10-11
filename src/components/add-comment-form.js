@@ -5,7 +5,7 @@ import Card from 'react-bootstrap/Card';
 // import { useContext } from "react";
 // import { postContext } from "../Context/postContext";
 import axios from "axios";
-import cookies from 'react-cookies'
+import Cookies from 'react-cookies'
 
 
 function AddCommentForm(props) {
@@ -13,7 +13,7 @@ function AddCommentForm(props) {
   // const { handleSubmitCommentForm } = useContext(postContext)
   const handleSubmitCommentForm = async (e) => {
     e.preventDefault();
-    const userID = cookies.load('userId');
+    const userID = Cookies.load('userId');
 
     const newComment = {
       comment: e.target.comment.value,

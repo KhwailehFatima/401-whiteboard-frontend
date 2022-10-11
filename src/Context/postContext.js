@@ -1,5 +1,5 @@
 import axios from "axios";
-import cookies from 'react-cookies'
+import Cookies from 'react-cookies'
 import { createContext, useState } from "react";
 
 export const postContext = createContext();
@@ -14,7 +14,7 @@ const PostContextProvider = (props) => {
   const getAllPosts = async () => {
     const allPosts = await axios.get(`${process.env.REACT_APP_HEROKU_URI}/post`, {
       headers: {
-        Authorization: `Bearer ${cookies.load('token')}`
+        Authorization: `Bearer ${Cookies.load('token')}`
       },
     }
     );
@@ -22,12 +22,12 @@ const PostContextProvider = (props) => {
   };
 
   const handlePostDelete = async (id) => {
-    const userID = cookies.load('userId');
+    const userID = Cookies.load('userId');
     console.log(userID)
 
     await axios.delete(`${process.env.REACT_APP_HEROKU_URI}/post/${id}`, {
       headers: {
-        Authorization: `Bearer ${cookies.load("token")}`,
+        Authorization: `Bearer ${Cookies.load("token")}`,
       },
     });
     getAllPosts();
@@ -36,7 +36,7 @@ const PostContextProvider = (props) => {
   const handleCommentDelete = async (id) => {
     await axios.delete(`${process.env.REACT_APP_HEROKU_URI}/comment/${id}`, {
       headers: {
-        Authorization: `Bearer ${cookies.load("token")}`,
+        Authorization: `Bearer ${Cookies.load("token")}`,
       },
     });
     getAllPosts();
@@ -51,12 +51,12 @@ const PostContextProvider = (props) => {
     const newPost = {
       postTitle: e.target.title.value,
       postContent: e.target.content.value,
-      userID: cookies.load('userId'),
-      creator: cookies.load('userName')
+      userID: Cookies.load('userId'),
+      creator: Cookies.load('userName')
     };
     await axios.post(`${process.env.REACT_APP_HEROKU_URI}/post`, newPost, {
       headers: {
-        Authorization: `Bearer ${cookies.load('token')}`,
+        Authorization: `Bearer ${Cookies.load('token')}`,
       }
     }).then(() => {
       getAllPosts();

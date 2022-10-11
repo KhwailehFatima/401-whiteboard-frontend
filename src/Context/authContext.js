@@ -1,7 +1,7 @@
 import { createContext, useState } from "react";
 import base64 from 'base-64'
 import axios from "axios";
-import cookies from 'react-cookies'
+import Cookies from 'react-cookies'
 
 export const authContext = createContext();
 
@@ -14,13 +14,13 @@ const AuthContextProvider = (props) => {
     const [theUser, settheUser] = useState({});
     const [capabilities, setCapabilities] = useState();
      const checkToken = () => {
-        const token = cookies.load('token');
-        const role = cookies.load('role');
-        const capabilities = cookies.load('capabilities');
+        const token = Cookies.load('token');
+        const role = Cookies.load('role');
+        const capabilities = Cookies.load('capabilities');
         
         
         if (token) {
-            settheUser(cookies.load("userName"))
+            settheUser(Cookies.load("userName"))
             setisLoggedin(true)
             setRole(role)
             setCapabilities(capabilities)
@@ -41,14 +41,14 @@ const AuthContextProvider = (props) => {
     //         }
     //     }).then( res=> settheUser(res.data))
     // }
-    const userName = cookies.load('userName');
+    const userName = Cookies.load('userName');
     const handleLogout = () => {
-        cookies.remove('token');
-        cookies.remove('userName');
-        cookies.remove('userId');
-        cookies.remove('email');
-        cookies.remove('role');
-        cookies.remove('capabilities')
+        Cookies.remove('token');
+        Cookies.remove('userName');
+        Cookies.remove('userId');
+        Cookies.remove('email');
+        Cookies.remove('role');
+        Cookies.remove('capabilities')
         setisLoggedin(false);
     }
     /************************************signup functions********************************** */
@@ -97,13 +97,13 @@ const AuthContextProvider = (props) => {
             .then((res) => {
                 settheUser(res.data)
                 console.log(res.data)
-                cookies.remove();
-                cookies.save('token', res.data.token);
-                cookies.save('userName', res.data.user.username);
-                cookies.save('userId', res.data.user.id);
-                cookies.save('email', res.data.user.email);
-                cookies.save('role', res.data.user.role);
-                cookies.save('capabilities', JSON.stringify(res.data.user.capabilities));
+                Cookies.remove();
+                Cookies.save('token', res.data.token);
+                Cookies.save('userName', res.data.user.username);
+                Cookies.save('userId', res.data.user.id);
+                Cookies.save('email', res.data.user.email);
+                Cookies.save('role', res.data.user.role);
+                Cookies.save('capabilities', JSON.stringify(res.data.user.capabilities));
                 checkLoggedin();
 
             })

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Modal, Button, Form} from "react-bootstrap";
 import axios from "axios";
-import cookies from "react-cookies";
+import Cookies from "react-cookies";
 
 function EditModal(props) {
 
@@ -14,15 +14,15 @@ function EditModal(props) {
         const updatedPost = {
           postTitle: e.target.editTitle.value,
           postContent: e.target.editContent.value,
-          userID: cookies.load('userId'),
-          creator: cookies.load('userName')
+          userID: Cookies.load('userId'),
+          creator: Cookies.load('userName')
         };
 
         console.log(updatedPost);
         console.log(id);
         await axios.put(`${process.env.REACT_APP_HEROKU_URI}/post/${id}`, updatedPost, {
             headers: {
-              Authorization: `Bearer ${cookies.load("token")}`,
+              Authorization: `Bearer ${Cookies.load("token")}`,
             },
           }
         );
