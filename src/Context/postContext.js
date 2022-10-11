@@ -4,83 +4,78 @@ import { createContext, useState } from "react";
 
 export const postContext = createContext();
 
- const PostContextProvider = (props) => {
+const PostContextProvider = (props) => {
 
-    /*************************************UserPost*******************************/
-    const [posts, setPosts] = useState([]);
-    const [ setAlertUser] = useState(false);
+  /*************************************UserPost*******************************/
+  const [posts, setPosts] = useState([]);
+  const [deleteAlert, setDeleteAlert] = useState(false);
+  const [AlertUser, setAlertUser] = useState(false);
 
-    const getAllPosts = async () => {
-      const allPosts = await axios.get(`${process.env.REACT_APP_HEROKU_URI}/post`, {
-        headers: {
-          Authorization: `Bearer ${cookies.load('token')}`
-        },
-      }
-      );
-      setPosts(allPosts.data.post)
-    };
+  const getAllPosts = async () => {
+    const allPosts = await axios.get(`${process.env.REACT_APP_HEROKU_URI}/post`, {
+      headers: {
+        Authorization: `Bearer ${cookies.load('token')}`
+      },
+    }
+    );
+    setPosts(allPosts.data.post)
+  };
 
-      const handlePostDelete = async (id) => {
-        await axios.delete(`${process.env.REACT_APP_HEROKU_URI}/post/${id}`, {
-          headers: {
-            Authorization: `Bearer ${cookies.load("token")}`,
-          },
-        });
-        getAllPosts();
-        setAlertUser(true);
-      };
-      const handleCommentDelete = async (id) => {
-        await axios.delete(`${process.env.REACT_APP_HEROKU_URI}/comment/${id}`, {
-          headers: {
-            Authorization: `Bearer ${cookies.load("token")}`,
-          },
-        });
-        getAllPosts();
-      };
-  
-/***************************************************add-post-form*********************************/
+  const handlePostDelete = async (id) => {
+    const userID = cookies.load('userId');
+    console.log(userID)
 
-const [alert, setAlert] = useState(false);
+    await axios.delete(`${process.env.REACT_APP_HEROKU_URI}/post/${id}`, {
+      headers: {
+        Authorization: `Bearer ${cookies.load("token")}`,
+      },
+    });
+    getAllPosts();
+    setDeleteAlert(true);
+  };
+  const handleCommentDelete = async (id) => {
+    await axios.delete(`${process.env.REACT_APP_HEROKU_URI}/comment/${id}`, {
+      headers: {
+        Authorization: `Bearer ${cookies.load("token")}`,
+      },
+    });
+    getAllPosts();
+  };
 
-const handleSubmitPostForm = async (e) => {
+  /***************************************************add-post-form*********************************/
+
+  const [alert, setAlert] = useState(false);
+
+  const handleSubmitPostForm = async (e) => {
     e.preventDefault();
     const newPost = {
-        postTitle: e.target.title.value,
-        postContent: e.target.content.value
+      postTitle: e.target.title.value,
+      postContent: e.target.content.value,
+      userID: cookies.load('userId'),
+      creator: cookies.load('userName')
     };
     await axios.post(`${process.env.REACT_APP_HEROKU_URI}/post`, newPost, {
-        headers: {
-          Authorization: `Bearer ${cookies.load('token')}`,
-        }
-    }).then( () => {
-        getAllPosts();
-        setAlert(true);
-    });
-}
-/***************************************************add-comment-form*********************************/
-const handleSubmitCommentForm = async (e) => {
-    e.preventDefault();
-    const userID = cookies.load('userId');
-
-    const newComment = {
-      comment: e.target.comment.value,
-    };
-     await axios.post(`${process.env.REACT_APP_HEROKU_URI}/comment/${props.postID}/${userID}`, newComment).then(() => {
- 
-      props.getAllPosts();
+      headers: {
+        Authorization: `Bearer ${cookies.load('token')}`,
+      }
+    }).then(() => {
+      getAllPosts();
+      setAlert(true);
     });
   }
-/***************************************************Modal*********************************/
+  /***************************************************add-comment-form*********************************/
+ 
+  /***************************************************Modal*********************************/
 
 
 
-const value = {handleSubmitCommentForm, handleSubmitPostForm,setAlertUser, getAllPosts, handlePostDelete, handleCommentDelete, posts };
+  const value = {  handleSubmitPostForm, setAlertUser, getAllPosts, handlePostDelete, handleCommentDelete, posts };
 
-    return (
-        <postContext.Provider value={value}>
-            {props.children}
-        </postContext.Provider>
-    )
+  return (
+    <postContext.Provider value={value}>
+      {props.children}
+    </postContext.Provider>
+  )
 
 }
 

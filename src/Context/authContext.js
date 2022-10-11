@@ -6,6 +6,8 @@ import cookies from 'react-cookies'
 export const authContext = createContext();
 
 const AuthContextProvider = (props) => {
+   
+   
     /************************************app functions********************************** */
     let [isLoggedin, setisLoggedin] = useState(false);//app
     const [role, setRole] = useState('');
@@ -22,7 +24,7 @@ const AuthContextProvider = (props) => {
             setisLoggedin(true)
             setRole(role)
             setCapabilities(capabilities)
-            console.log(capabilities)
+            // console.log(capabilities)
             // userCanDo()
         }
     }
@@ -33,7 +35,7 @@ const AuthContextProvider = (props) => {
     /********************** if i have a profile route************************ */
 
     // const userCanDo = () => {
-    //     axios.get(`${process.env.REACT_APP_HEROKU_URL}/profile`,{},{
+    //     axios.get(`${process.env.REACT_APP_HEROKU_URI}/profile`,{},{
     //         headers:{
     //             Authorization:`Bearer ${cookies.load('token')}  `
     //         }
@@ -61,8 +63,8 @@ const AuthContextProvider = (props) => {
                 role: e.target.role.value,
 
             };
-             
-            await axios.post(`${process.env.REACT_APP_HEROKU_URL}/signup`, data)
+             console.log(process.env.REACT_APP_HEROKU_URI)
+            await axios.post(`${process.env.REACT_APP_HEROKU_URI}/signup`, data)
                 .then((res) => {
                     console.log(res)
                     window.location.href = '/post';
@@ -85,7 +87,7 @@ const AuthContextProvider = (props) => {
         const encoded = base64.encode(`${user.userName}:${user.password}`);
         await axios
 
-            .post(`${process.env.REACT_APP_HEROKU_URL}/signin`, {},
+            .post(`${process.env.REACT_APP_HEROKU_URI}/signin`, {},
                 {
                     headers: {
                         Authorization: `Basic ${encoded}`,
@@ -101,7 +103,7 @@ const AuthContextProvider = (props) => {
                 cookies.save('userId', res.data.user.id);
                 cookies.save('email', res.data.user.email);
                 cookies.save('role', res.data.user.role);
-                cookies.save('capabilities', JSON.stringify(res.data.user.capabilities))
+                cookies.save('capabilities', JSON.stringify(res.data.user.capabilities));
                 checkLoggedin();
 
             })
