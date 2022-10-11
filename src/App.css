@@ -22,40 +22,42 @@ body {
 
 
 }
-.parent-div{
- align-content: center;
- position: relative;
- margin-left: 30%;
+
+.parent-div {
+  align-content: center;
+  position: relative;
+  margin-left: 30%;
 
 }
+
 .cards {
   position: relative;
   margin-top: 200px;
   margin-left: 100px;
   text-align: center;
   display: grid;
-   grid-row: auto;
+  grid-row: auto;
 }
 
 .eachCard {
- 
+
   display: flex;
   flex-direction: column;
   position: relative;
   margin-top: 20px;
- }
+}
 
-.post-p{
-box-sizing: content-box;
-border-radius: 1cm;
-background-color: yellowgreen;
-color: black;
+.post-p {
+  box-sizing: content-box;
+  border-radius: 1cm;
+  background-color: yellowgreen;
+  color: black;
 
 }
 
-.post-title{
- box-sizing: border-box;
-  
+.post-title {
+  box-sizing: border-box;
+
 
 }
 
@@ -165,4 +167,10 @@ color: black;
 .footer-p {
   position: relative;
   top: 50px;
+}
+
+.modal {
+  position: relative;
+  bottom: 400px;
+ 
 }
