@@ -1,130 +1,68 @@
-import { createContext, useState } from "react";
-import base64 from 'base-64'
-import axios from "axios";
-import Cookies from 'react-cookies'
+import { createContext, useContext } from "react";
+import cookies from "react-cookies";
+import { login, logout, signup } from "../actions/authActions";
+import { useReducer } from "react";
+import { AuthReducer } from "../reducers/authReducer";
+import { authData } from "../config/initials";
 
-export const authContext = createContext();
 
-const AuthContextProvider = (props) => {
-   
-   
-    /************************************app functions********************************** */
-    let [isLoggedin, setisLoggedin] = useState(false);//app
-    const [role, setRole] = useState('');
-    const [theUser, settheUser] = useState({});
-    const [capabilities, setCapabilities] = useState();
-     const checkToken = () => {
-        const token = Cookies.load('token');
-        const role = Cookies.load('role');
-        const capabilities = Cookies.load('capabilities');
-        
-        
-        if (token) {
-            settheUser(Cookies.load("userName"))
-            setisLoggedin(true)
-            setRole(role)
-            setCapabilities(capabilities)
-            // console.log(capabilities)
-            // userCanDo()
-        }
-    }
+const AuthContext = createContext();
+export const useAuth = () => useContext( AuthContext );
 
-    const checkLoggedin = () => {
-        setisLoggedin(true);
-    }
-    /********************** if i have a profile route************************ */
 
-    // const userCanDo = () => {
-    //     axios.get(`${process.env.REACT_APP_HEROKU_URI}/profile`,{},{
-    //         headers:{
-    //             Authorization:`Bearer ${cookies.load('token')}  `
-    //         }
-    //     }).then( res=> settheUser(res.data))
-    // }
-    const userName = Cookies.load('userName');
-    const handleLogout = () => {
-        Cookies.remove('token');
-        Cookies.remove('userName');
-        Cookies.remove('userId');
-        Cookies.remove('email');
-        Cookies.remove('role');
-        Cookies.remove('capabilities')
-        setisLoggedin(false);
-    }
-    /************************************signup functions********************************** */
-    const [isPassword, setisPassword] = useState(false);
-    const handleSignup = async (e) => {
-        e.preventDefault();
-        if (e.target.password.value === e.target.confirmPassword.value) {
-            const data = {
-                userName: e.target.userName.value,
-                email: e.target.email.value,
-                password: e.target.password.value,
-                role: e.target.role.value,
+const AuthContextProvider = ( props ) => {
+    const [ auth, dispatch ] = useReducer( AuthReducer, authData );
 
-            };
-            //  console.log(process.env.REACT_APP_HEROKU_URI)
-            await axios.post(`${process.env.REACT_APP_HEROKU_URI}/signup`, data)
-                .then((res) => {
-                    console.log(res)
-                    window.location.href = '/post';
-                }).catch((error) => console.log(error));
-        } else {
-            setisPassword(true)
-            console.log('password does not match')
-        }
-
+    const authObj = {
+        username: JSON.parse( localStorage.getItem( 'username' ) ),
+        token: cookies.load( 'token' ),
+        user_id: JSON.parse( localStorage.getItem( 'user_id' ) ),
+        role: JSON.parse( localStorage.getItem( 'role' ) ),
+        capabilities: JSON.parse( localStorage.getItem( 'capabilities' ) ) ? JSON.parse( localStorage.getItem( 'capabilities' ) ) : [],
+        isAuth: JSON.parse( localStorage.getItem( 'isAuth' ) ) ? JSON.parse( localStorage.getItem( 'isAuth' ) ) : false,
     };
-    /************************************signin functions********************************** */
-    const [isNotLogged, setIsNotLogged] = useState(false);
-    const handleSignin = async (e) => {
+
+    const handleSignIn = async ( e ) => {
         e.preventDefault();
-        const user = {
-            userName: e.target.userName.value,
-            password: e.target.password.value,
+        const userInput = {
+            'username': e.target.username.value,
+            'password': e.target.password.value,
         };
-
-        const encoded = base64.encode(`${user.userName}:${user.password}`);
-        await axios
-
-            .post(`${process.env.REACT_APP_HEROKU_URI}/signin`, {},
-                {
-                    headers: {
-                        Authorization: `Basic ${encoded}`,
-                    },
-                }
-            )
-            .then((res) => {
-                settheUser(res.data)
-                console.log(res.data)
-                Cookies.remove();
-                Cookies.save('token', res.data.token);
-                Cookies.save('userName', res.data.user.username);
-                Cookies.save('userId', res.data.user.id);
-                Cookies.save('email', res.data.user.email);
-                Cookies.save('role', res.data.user.role);
-                Cookies.save('capabilities', JSON.stringify(res.data.user.capabilities));
-                checkLoggedin();
-
-            })
-            .catch((error) =>
-                setIsNotLogged(true)
-            );
+        login( dispatch, { username: userInput.username, password: userInput.password } );
     };
 
-    const value = {
-        handleSignin, handleSignup, handleLogout,
-        userName, checkLoggedin, isLoggedin,
-        setisLoggedin, isPassword, setisPassword,
-        checkToken, role, theUser, capabilities
+    const handleSignUp = async ( e ) => {
+        e.preventDefault();
+        if ( e.target.password.value !== e.target.confirmPassword.value ) {
+            alert( 'Passwords do not match' );
+            return;
+        } else {
+            const userObject = {
+                'username': e.target.username.value,
+                'password': e.target.password.value,
+                'email': e.target.email.value,
+                'role': e.target.role.value
+            };
+            signup( dispatch, userObject );
+        };
     };
 
+    const handleSignOut = () => {
+        logout( dispatch );
+    };
+    const canDo = ( role, postId ) => {
+        if ( authObj.capabilities.includes( role ) || parseInt( authObj.user_id ) === postId ) {
+            return true;
+        } else {
+            return false;
+        }
+    };
+    const value = { handleSignIn, handleSignUp, handleSignOut, authObj, canDo, auth };
     return (
-        <authContext.Provider value={value} >
+        <AuthContext.Provider value={value}>
             {props.children}
-        </authContext.Provider>
-    )
-
-}
+        </AuthContext.Provider>
+    );
+};
 
 export default AuthContextProvider;

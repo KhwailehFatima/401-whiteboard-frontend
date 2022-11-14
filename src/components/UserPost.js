@@ -5,13 +5,13 @@ import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import Modal from "./Modal";
 import { useContext } from "react";
-import { postContext } from "../Context/postContext";
- import { authContext } from "../Context/authContext";
+import { PostContext } from "../Context/postContext";
+ import { useAuth } from "../Context/authContext";
 
 export default function Post() {
 
-  const { getAllPosts, handlePostDelete, handleCommentDelete, posts, role } = useContext(postContext);
-  const { userName } = useContext(authContext)
+  const { getAllPosts, handlePostDelete, handleCommentDelete, posts, role } = useContext(PostContext);
+  const { userName } = useContext(useAuth)
 
   useEffect(() => {
     getAllPosts();
@@ -21,7 +21,8 @@ export default function Post() {
     <div className="parent-div">
       {/* {alert && (
         <Alert key="strong" variant="success" onClose={() => setAlertUser(false)} dismissible>
-          Post has been deleted successfully!
+          Post has been delis
+          eted successfully!
         </Alert>
       )} */}
 

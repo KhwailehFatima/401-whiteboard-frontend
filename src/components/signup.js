@@ -2,13 +2,12 @@ import React from "react";
  import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
  import Alert from "react-bootstrap/Alert";
- import { authContext } from '../Context/authContext';
-import { useContext } from "react";
-
+ import { useAuth } from '../Context/authContext';
+ 
 
 export default function Signup() {
 
- const {handleSignup, isPassword}=useContext(authContext);
+ const {handleSignup, isPassword}=useAuth();
     
     return (
         <div className="signin-div">
