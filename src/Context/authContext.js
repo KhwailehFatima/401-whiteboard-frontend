@@ -1,64 +1,68 @@
-import { createContext, useReducer } from "react";
-import base64 from 'base-64'
+import { createContext, useContext } from "react";
+import cookies from "react-cookies";
 import { login, logout, signup } from "../actions/authActions";
+import { useReducer } from "react";
 import { AuthReducer } from "../reducers/authReducer";
-import { initialState } from "../config/initials";
+import { authData } from "../config/initials";
 
 
-export const authContext = createContext();
+const AuthContext = createContext();
+export const useAuth = () => useContext( AuthContext );
 
-const AuthContextProvider = (props) => {
-    
-    
-    const userName = localStorage.getItem('userName')
-    const [user, dispatch] = useReducer(AuthReducer, initialState)
-    console.log(user)
 
-    
-    const handleLogout = () => {
-        logout(dispatch)
-    }
- 
-    const handleSignup = async (e) => {
+const AuthContextProvider = ( props ) => {
+    const [ auth, dispatch ] = useReducer( AuthReducer, authData );
+
+    const authObj = {
+        username: JSON.parse( localStorage.getItem( 'username' ) ),
+        token: cookies.load( 'token' ),
+        user_id: JSON.parse( localStorage.getItem( 'user_id' ) ),
+        role: JSON.parse( localStorage.getItem( 'role' ) ),
+        capabilities: JSON.parse( localStorage.getItem( 'capabilities' ) ) ? JSON.parse( localStorage.getItem( 'capabilities' ) ) : [],
+        isAuth: JSON.parse( localStorage.getItem( 'isAuth' ) ) ? JSON.parse( localStorage.getItem( 'isAuth' ) ) : false,
+    };
+
+    const handleSignIn = async ( e ) => {
         e.preventDefault();
-        if (e.target.password.value !== e.target.confirmPassword.value) {
-            alert('Password does not match')
-            return
-        }
-        else {
-            const data = {
-                userName: e.target.userName.value,
-                email: e.target.email.value,
-                password: e.target.password.value,
-                role: e.target.role.value,
+        const userInput = {
+            'username': e.target.username.value,
+            'password': e.target.password.value,
+        };
+        login( dispatch, { username: userInput.username, password: userInput.password } );
+    };
+
+    const handleSignUp = async ( e ) => {
+        e.preventDefault();
+        if ( e.target.password.value !== e.target.confirmPassword.value ) {
+            alert( 'Passwords do not match' );
+            return;
+        } else {
+            const userObject = {
+                'username': e.target.username.value,
+                'password': e.target.password.value,
+                'email': e.target.email.value,
+                'role': e.target.role.value
             };
-            signup(dispatch, data)
+            signup( dispatch, userObject );
         };
     };
 
-     const handleSignin = async (e) => {
-        e.preventDefault();
-        const user = {
-            userName: e.target.userName.value,
-            password: e.target.password.value,
-        };
-        const encoded = base64.encode(`${userName}:${user.password}`);
-        login(dispatch, encoded)
-        console.log(user)
+    const handleSignOut = () => {
+        logout( dispatch );
     };
-
-    const value = {
-        handleSignin, handleSignup, handleLogout,
-        userName
-        
+    const canDo = ( role, postId ) => {
+        if ( authObj.capabilities.includes( role ) || parseInt( authObj.user_id ) === postId ) {
+            return true;
+        } else {
+            return false;
+        }
     };
-
+    const value = { handleSignIn, handleSignUp, handleSignOut, authObj, canDo, auth };
     return (
-        <authContext.Provider value={value} >
+        <AuthContext.Provider value={value}>
             {props.children}
-        </authContext.Provider>
-    )
-
-}
+        </AuthContext.Provider>
+    );
+};
 
 export default AuthContextProvider;

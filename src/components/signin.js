@@ -1,11 +1,11 @@
 import React from "react";
 import { useContext } from "react";
 import Form from "react-bootstrap/Form";
-import { authContext } from '../Context/authContext';
+import { useAuth } from '../Context/authContext';
 
 export default function Signin( ) {
 
-  const { handleSignin, isNotLogged } = useContext(authContext);
+  const { handleSignin  } = useAuth();
 
   return (
     <div className="signin-div">
@@ -27,11 +27,7 @@ export default function Signin( ) {
             <Form.Control className="input" type="password" placeholder="password" id="password" autoComplete="current-password" />
           </Form.Group>
 
-          {isNotLogged &&
-            <div>
-              You are not Authorized
-            </div>
-          }
+           
 
           <button className="signin-button" type="submit">Sign In</button>
           <p className="signin-p" > You don't have an account? Join to my website <a href="/signup">Sign up now</a></p>

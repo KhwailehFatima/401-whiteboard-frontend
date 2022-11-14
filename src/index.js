@@ -5,17 +5,21 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import AuthContextProvider from './Context/authContext';
 import PostContextProvider from './Context/postContext';
+import { ChakraProvider } from '@chakra-ui/react'
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
-  <React.StrictMode>
-    <AuthContextProvider>
-      <PostContextProvider>
-        <App />
-      </PostContextProvider>
-    </AuthContextProvider>
-  </React.StrictMode>
+  <ChakraProvider>
+    <React.StrictMode>
+      <AuthContextProvider>
+        <PostContextProvider>
+          <App />
+        </PostContextProvider>
+      </AuthContextProvider>
+    </React.StrictMode>
+  </ChakraProvider>
 );
 
 // If you want to start measuring performance in your app, pass a function

@@ -1,74 +1,67 @@
-import { actionType } from "../config/constants";
- 
- 
+import { actionType } from "../config/constants"; 
 
-export const AuthReducer = (state, action) => {
-    switch (action.type) {
+export const AuthReducer = ( state, action ) => {
+    switch ( action.type ) {
         case actionType.REQUEST_LOGIN:
             return {
                 ...state,
-                loading: true
-            }
+                loading: true,
+                isAuth: false,
+            };
         case actionType.LOGIN_SUCCESS:
             return {
                 ...state,
-                user: {
-                    userName: action.payload.user.userName,
-                    role: action.payload.user.role,
-                    id: action.payload.user.id,
-                    capability: action.payload.user.capability
-
-                },
-                token: action.payload,
+                isAuth: true,
                 loading: false,
-                isAuth: true
-            }
+                user: {
+                    username: action.payload.user.username,
+                    id: action.payload.user.id,
+                    role: action.payload.user.role,
+                    capabilities: action.payload.user.capabilities,
+                },
+            };
         case actionType.LOGIN_FAILED:
             return {
                 ...state,
+                isAuth: false,
                 loading: false,
-                errorMessage: action.payload,
-                isAuth: false
-            }
+                error: action.payload,
+                user: {}
+            };
         case actionType.LOGOUT:
             return {
                 ...state,
-                user: {},
                 isAuth: false,
-                token: ''
-            }
+                user: {}
+            };
         case actionType.REQUEST_SIGNUP:
             return {
                 ...state,
                 isAuth: false,
-                loading: true
-            }
+                loading: true,
+            };
         case actionType.SIGNUP_SUCCESS:
             return {
                 ...state,
                 isAuth: true,
                 loading: false,
                 user: {
-                    userName: action.payload.userName,
-                    id: action.payload.id,
-                    token: action.payload.token,
+                    username: action.payload.username,
+                    user_id: action.payload.user_id,
                     role: action.payload.role,
-                    capability: action.payload.capability
+                    token: action.payload.token,
+                    capabilities: action.payload.capabilities,
                 }
-            }
+            };
         case actionType.SIGNUP_FAILED:
             return {
                 ...state,
                 isAuth: false,
                 loading: false,
-                token: '',
-                errorMessage: action.payload,
-                user: ''
-            }
-
+                error: action.payload,
+                user: {}
+            };
         default:
             return state;
-        // throw new Error(`Unkown action type ${action.type}`);
-
     }
-}
+};

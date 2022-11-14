@@ -5,12 +5,12 @@ import Form from "react-bootstrap/Form";
 import { Stack } from "react-bootstrap";
  import Alert from "react-bootstrap/Alert";
 import { useContext } from "react";
-import { postContext } from "../Context/postContext";
+import { PostContext } from "../Context/postContext";
 
 
 function AddPostForm() {
 
-  const { handleSubmitPostForm, setAlert, alert } = useContext(postContext);
+  const { handleSubmitPostForm, setAlert, alert } = useContext(PostContext);
 
   return (
     <div className="postForm">
